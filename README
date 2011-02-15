@@ -1,0 +1,7 @@
+## Network Device Backup Scripts v0.9
+### Written by: Ali Tayarani
+
+KNOWN ISSUES
+------
+* Scripts currently expect to live in /usr/local/bin
+* Samba/CIFS is the only network filesystem supported for now
