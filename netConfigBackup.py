@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 ###Import Block###
 from getpass import getpass,getuser
 from time import sleep,time
@@ -8,6 +8,7 @@ from datetime import datetime
 from subprocess import *
 from socket import gethostbyname,gethostname
 from configobj import ConfigObj
+from threading import *
 import shutil
 
 import logging,string
@@ -80,7 +81,9 @@ def getDevices(model):
         return result
 ###End Functions###
 
-config=ConfigObj("config.ini")
+
+rundir = "/usr/local/bin/"
+config=ConfigObj("%s/config.ini" % rundir)
 smb_config=config['smb']
 
 
@@ -161,22 +164,21 @@ except:
         san_pass = pass_config['san']
 
 ###Expect Scripts###
-exp_path = "/usr/local/bin/"
 ##Cisco##
-ios_cmd = exp_path + "getIOS.exp"
-fos_cmd = exp_path + "getFOS.exp"
-nxos_cmd = exp_path + "getNXOS.exp"
-nxos_san_cmd = exp_path + "getNXOS-SAN.exp"
-iosxe_cmd = exp_path + "getIOSXE.exp"
+ios_cmd = rundir + "getIOS.exp"
+fos_cmd = rundir + "getFOS.exp"
+nxos_cmd = rundir + "getNXOS.exp"
+nxos_san_cmd = rundir + "getNXOS-SAN.exp"
+iosxe_cmd = rundir + "getIOSXE.exp"
 
 ##Force10##
-ftos_cmd = exp_path + "getFTOS.exp"
-sftos_cmd = exp_path + "getSFTOS.exp"
+ftos_cmd = rundir + "getFTOS.exp"
+sftos_cmd = rundir + "getSFTOS.exp"
 
 ##Others##
-ent_cmd = exp_path + "getEnt.exp"
-dell_cmd = exp_path + "getDell.exp"
-dellv2_cmd = exp_path + "getDellv2.exp"
+ent_cmd = rundir + "getEnt.exp"
+dell_cmd = rundir + "getDell.exp"
+dellv2_cmd = rundir + "getDellv2.exp"
 
 ###Device List By OS###
 ##Cisco
@@ -213,16 +215,38 @@ logging.basicConfig(filename=LOG,level=logging.INFO,filemode='w',format="%(ascti
 
 ###Config Import###
 ##Cisco##
-get_config(ios,ios_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-get_config(fos,fos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-get_config(nxos,nxos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-get_config(nxos_san,nxos_san_cmd,san_pass,netdev_en_pass,tftpIP)
-get_config(voip,ios_cmd,netdev_user_pass,voipdev_en_pass,tftpIP)
-get_config(iosxe,iosxe_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+iosThread=Thread(target=get_config,args=(ios,ios_cmd,netdev_user_pass,netdev_en_pass,tftpIP))
+fosThread=Thread(target=get_config,args=(fos,fos_cmd,netdev_user_pass,netdev_en_pass,tftpIP))
+nxosThread=Thread(target=get_config,args=(nxos,nxos_cmd,netdev_user_pass,netdev_en_pass,tftpIP))
+sanThread=Thread(target=get_config,args=(nxos_san,nxos_san_cmd,san_pass,netdev_en_pass,tftpIP))
+voipThread=Thread(target=get_config,args=(voip,ios_cmd,netdev_user_pass,voipdev_en_pass,tftpIP))
+iosxeThread=Thread(target=get_config,args=(iosxe,iosxe_cmd,netdev_user_pass,netdev_en_pass,tftpIP))
 ##Force10##
-get_config(ftos,ftos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+ftosThread=Thread(target=get_config,args=(ftos,ftos_cmd,netdev_user_pass,netdev_en_pass,tftpIP))
 #get_config(sftos,sftos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
 ##Others##
-get_config(ent,ent_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-get_config(dell,dell_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-get_config(dellv2,dellv2_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+entThread=Thread(target=get_config,args=(ent,ent_cmd,netdev_user_pass,netdev_en_pass,tftpIP))
+dellThread=Thread(target=get_config,args=(dell,dell_cmd,netdev_user_pass,netdev_en_pass,tftpIP))
+dellv2Thread=Thread(target=get_config,args=(dellv2,dellv2_cmd,netdev_user_pass,netdev_en_pass,tftpIP))
+
+iosThread.start()
+fosThread.start()
+nxosThread.start()
+sanThread.start()
+voipThread.start()
+iosxeThread.start()
+ftosThread.start()
+entThread.start()
+dellThread.start()
+dellv2Thread.start()
+
+iosThread.join()
+fosThread.join()
+nxosThread.join()
+sanThread.join()
+voipThread.join()
+iosxeThread.join()
+ftosThread.join()
+entThread.join()
+dellThread.join()
+dellv2Thread.join()
