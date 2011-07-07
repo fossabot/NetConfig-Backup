@@ -1,20 +1,20 @@
 #!/usr/bin/env python
 ###Import Block###
-from getpass import getpass,getuser
-from time import sleep,time
-from os import path,makedirs,listdir,remove,rmdir
-from sys import exit
-from datetime import datetime
-from subprocess import *
-from socket import gethostbyname,gethostname
 from configobj import ConfigObj
-from threading import *
+from datetime import datetime
+from getpass import getpass,getuser
+import logging
+from os import path,makedirs,listdir,remove,rmdir
 import shutil
+from socket import gethostbyname,gethostname
+import string
+from subprocess import *
+from sys import exit
+from threading import *
+from time import sleep,time
 
-import logging,string
-
-###clear old download dirs###
 def clear_old_dir(expRate):
+    '''Clear old download dirs'''
         def get_immediate_subdirectories(dir):
             return [name for name in listdir(dir)
                     if path.isdir(path.join(dir, name))]
@@ -179,6 +179,7 @@ sftos_cmd = rundir + "getSFTOS.exp"
 ent_cmd = rundir + "getEnt.exp"
 dell_cmd = rundir + "getDell.exp"
 dellv2_cmd = rundir + "getDellv2.exp"
+dellv3_cmd = rundir + "getDellv3.exp"
 
 ###Device List By OS###
 ##Cisco
@@ -199,6 +200,7 @@ ent = getDevices("ent")
 ##Dell
 dell = getDevices("dell")
 dellv2 = getDevices("dellv2")
+dellv3 = getDevices("dellv3")
 
 ###Create TFTP Path###
 if not path.exists(basedir):
@@ -228,6 +230,7 @@ ftosThread=Thread(target=get_config,args=(ftos,ftos_cmd,netdev_user_pass,netdev_
 entThread=Thread(target=get_config,args=(ent,ent_cmd,netdev_user_pass,netdev_en_pass,tftpIP))
 dellThread=Thread(target=get_config,args=(dell,dell_cmd,netdev_user_pass,netdev_en_pass,tftpIP))
 dellv2Thread=Thread(target=get_config,args=(dellv2,dellv2_cmd,netdev_user_pass,netdev_en_pass,tftpIP))
+dellv3Thread=Thread(target=get_config,args=(dellv3,dellv3_cmd,netdev_user_pass,netdev_en_pass,tftpIP))
 
 iosThread.start()
 fosThread.start()
@@ -239,6 +242,7 @@ ftosThread.start()
 entThread.start()
 dellThread.start()
 dellv2Thread.start()
+dellv3Thread.start()
 
 iosThread.join()
 fosThread.join()
@@ -250,3 +254,4 @@ ftosThread.join()
 entThread.join()
 dellThread.join()
 dellv2Thread.join()
+dellv3Thread.join()
