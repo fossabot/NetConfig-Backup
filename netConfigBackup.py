@@ -261,6 +261,24 @@ dellv3Thread.join()
 for device in bad_devices:
 	if device in ios:
 		get_config([device],ios_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-	else if device in fos:
+	elif device in fos:
 		get_config([device],fos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-		
+	elif device in nxos:
+		get_config([device],nxos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+	elif device in san:
+		get_config([device],nxos_san_cmd,san_pass,netdev_en_pass,tftpIP)
+	elif device in voip:
+		get_config([device],ios_cmd,netdev_user_pass,voipdev_en_pass,tftpIP)
+	elif device in iosxe:
+		get_config([device],iosxe_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+	elif device in ftos:
+		get_config([device],ftos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+	elif device in ent:
+		get_config([device],ent_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+	elif device in dell:
+		get_config([device],dell_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+	elif device in dellv2:
+		get_config([device],dellv2_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+	elif device in dellv3:
+		get_config([device],dellv3_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+	
