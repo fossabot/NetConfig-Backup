@@ -54,8 +54,10 @@ def get_config(list,cmd,user_pass,en_pass,ip):
 					print("%s remote transfer complete\n" % item)
 				else:
 					logging.error("%s remote transfer failed\n" % item)
+					bad_devices.append(item)
 			else:
 				logging.error("%s local download failed" % item)
+				bad_devices.append(item)
 
 
 		else:
@@ -85,7 +87,7 @@ def getDevices(model):
 rundir = "/usr/local/bin/"
 config=ConfigObj("%s/config.ini" % rundir)
 smb_config=config['smb']
-
+bad_devices=[]
 
 ###Set TFTP IP###
 tftpIP="%s" % gethostbyname(gethostname())
@@ -255,3 +257,10 @@ entThread.join()
 dellThread.join()
 dellv2Thread.join()
 dellv3Thread.join()
+
+for device in bad_devices:
+	if device in ios:
+		get_config([device],ios_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+	else if device in fos:
+		get_config([device],fos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+		
