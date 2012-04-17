@@ -265,7 +265,7 @@ for device in bad_devices:
 		get_config([device],fos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
 	elif device in nxos:
 		get_config([device],nxos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-	elif device in san:
+	elif device in nxos_san:
 		get_config([device],nxos_san_cmd,san_pass,netdev_en_pass,tftpIP)
 	elif device in voip:
 		get_config([device],ios_cmd,netdev_user_pass,voipdev_en_pass,tftpIP)
