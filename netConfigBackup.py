@@ -258,6 +258,7 @@ dellThread.join()
 dellv2Thread.join()
 dellv3Thread.join()
 
+logging.error('Failed Devices:\n%s' % bad_devices)
 #for device in bad_devices:
 #	if device in ios:
 #		get_config([device],ios_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
