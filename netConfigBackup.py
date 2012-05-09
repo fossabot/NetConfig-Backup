@@ -14,23 +14,23 @@ from threading import *
 from time import sleep,time
 
 def clear_old_dir(expRate):
-    '''Clear old download dirs'''
-        def get_immediate_subdirectories(dir):
-            return [name for name in listdir(dir)
-                    if path.isdir(path.join(dir, name))]
+	'''Clear old download dirs'''
+	def get_immediate_subdirectories(dir):
+		return [name for name in listdir(dir)
+			if path.isdir(path.join(dir, name))]
 
-        basedir = "/tftpboot/"
-        dirs = get_immediate_subdirectories(basedir)
-        for dir in dirs:
-                dir = basedir + dir
-                mtime = path.getmtime(dir)
-                mtime = int(mtime)
-                today = time()
-                delta = (today - mtime)
-                print(dir)
+		basedir = "/tftpboot/"
+		dirs = get_immediate_subdirectories(basedir)
+		for dir in dirs:
+			dir = basedir + dir
+			mtime = path.getmtime(dir)
+			mtime = int(mtime)
+			today = time()
+			delta = (today - mtime)
+			print(dir)
 
-                if delta > expRate:
-			shutil.rmtree(dir)
+			if delta > expRate:
+				shutil.rmtree(dir)
 
 ###Function for Config Import###
 def get_config(list,cmd,user_pass,en_pass,ip):
@@ -41,6 +41,7 @@ def get_config(list,cmd,user_pass,en_pass,ip):
 			Popen(["ssh-keygen","-R",item],stdin=None,stdout=open('/dev/null', 'w'),stderr=open('/dev/null','w'))
 			sleep(10)
 
+			Popen(["ping","-c","4","-i","1",item],stdin=None,stdout=open('/dev/null','w'),stderr=open('/dev/null','w'))
 			p=Popen([cmd, item, user_pass, en_pass, username,ip], stdin=None, stdout=PIPE)
 			sleep(30)
 			p.stdout.close()
@@ -258,27 +259,28 @@ dellThread.join()
 dellv2Thread.join()
 dellv3Thread.join()
 
-for device in bad_devices:
-	if device in ios:
-		get_config([device],ios_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-	elif device in fos:
-		get_config([device],fos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-	elif device in nxos:
-		get_config([device],nxos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-	elif device in san:
-		get_config([device],nxos_san_cmd,san_pass,netdev_en_pass,tftpIP)
-	elif device in voip:
-		get_config([device],ios_cmd,netdev_user_pass,voipdev_en_pass,tftpIP)
-	elif device in iosxe:
-		get_config([device],iosxe_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-	elif device in ftos:
-		get_config([device],ftos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-	elif device in ent:
-		get_config([device],ent_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-	elif device in dell:
-		get_config([device],dell_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-	elif device in dellv2:
-		get_config([device],dellv2_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
-	elif device in dellv3:
-		get_config([device],dellv3_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+logging.error('Failed Devices:\n%s' % bad_devices)
+#for device in bad_devices:
+#	if device in ios:
+#		get_config([device],ios_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+#	elif device in fos:
+#		get_config([device],fos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+#	elif device in nxos:
+#		get_config([device],nxos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+#	elif device in nxos_san:
+#		get_config([device],nxos_san_cmd,san_pass,netdev_en_pass,tftpIP)
+#	elif device in voip:
+#		get_config([device],ios_cmd,netdev_user_pass,voipdev_en_pass,tftpIP)
+#	elif device in iosxe:
+#		get_config([device],iosxe_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+#	elif device in ftos:
+#		get_config([device],ftos_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+#	elif device in ent:
+#		get_config([device],ent_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+#	elif device in dell:
+#		get_config([device],dell_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+#	elif device in dellv2:
+#		get_config([device],dellv2_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
+#	elif device in dellv3:
+#		get_config([device],dellv3_cmd,netdev_user_pass,netdev_en_pass,tftpIP)
 	
