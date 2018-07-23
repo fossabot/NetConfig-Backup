@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fatayarani%2FNetConfig-Backup.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fatayarani%2FNetConfig-Backup?ref=badge_shield)
+
 LICENSE
 ------
 Copyright (c) 2011, Ali Tayarani
@@ -33,3 +35,7 @@ KNOWN ISSUES
 ------
 * Scripts currently expect to live in /usr/local/bin
 * Samba/CIFS is the only network filesystem supported for now
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fatayarani%2FNetConfig-Backup.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fatayarani%2FNetConfig-Backup?ref=badge_large)
